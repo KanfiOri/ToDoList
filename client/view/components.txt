@@ -1,0 +1,15 @@
+Components:
+
+Main Component - ToDosApp
+    ToDoInput
+    ToDoList
+        FilterPill
+        mapTheTasks
+            Task
+
+
+State:
+task
+newToDo
+
+state should be saved in Main component - ToDoApp

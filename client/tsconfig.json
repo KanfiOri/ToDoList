@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "esnext",
+      "target": "es5",
+      "jsx": "react",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true
+    },
+    "include": ["view/src/**/*"],
+    "exclude": ["node_modules"]
+}
+  
