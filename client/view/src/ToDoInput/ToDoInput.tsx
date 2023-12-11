@@ -1,23 +1,28 @@
 import React, {useState} from 'react'
 import {task} from '../../../entites/interfaces'
+import { iDataProvider } from '../../../dataProvider/dataprovider';
+import useTasks from '../hooks/useTasks';
 
 interface ToDoInputProps {
-    tasks: task[]
-    onTaskChange: (text: task[]) => void
+    dataProvider: iDataProvider
 }
 
-const ToDoInput: React.FC<ToDoInputProps> = ({tasks, onTaskChange}) => {
+const ToDoInput: React.FC<ToDoInputProps> = ({dataProvider}) => {
+    const tasks = dataProvider.getAllTasks()
     const randomNumber = Math.floor(Math.random() * 1000000) + 1; 
     const [task, setTask] = useState<task>({id: 0, taskName: '', deadLine: new Date(), finished: false})
     const addTask = () => {
         if(!tasks.find((taskInArray) => task.id === taskInArray.id) && task.taskName !== "") {
-            onTaskChange([...tasks, task])
+            dataProvider.addTask(task)
         }
+    }
+    const editTask = (taskName: string) => {
+        setTask({id: randomNumber, taskName: taskName, deadLine: new Date, finished: false})
     }
     return(
         <div>
             <h1>ToDoInput</h1>
-            <input type="text" onChange={(e) => {setTask({id: randomNumber, taskName: e.target.value, deadLine: new Date, finished: false})}}></input>
+            <input type="text" onChange={(e) => editTask(e.target.value)}></input>
             <button onClick={ addTask }>Add new Task</button>
         </div>
     )

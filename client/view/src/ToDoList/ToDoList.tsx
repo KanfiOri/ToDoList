@@ -1,22 +1,26 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Task from '../Task/Task'
 import { task } from '../../../entites/interfaces'
+import { iDataProvider } from '../../../dataProvider/dataprovider'
+import useTasks from '../hooks/useTasks'
 
 interface ToDoListProps {
-    tasks: task[]
-    onTaskChange: (text: task[]) => void
+    dataProvider: iDataProvider
 }
 
-const ToDoList: React.FC<ToDoListProps> = ({ tasks, onTaskChange }) => {
+const ToDoList: React.FC<ToDoListProps> = ({ dataProvider }) => {
+    const {tasks, refreshTasks} = useTasks(dataProvider) 
     const deleteAllTasks = () => {
-        onTaskChange([])
+        dataProvider.deleteAllTasks()
+        refreshTasks()
     }
     const deleteFinishedTasks = () => {
-        const unFinishedTasks = tasks.filter((task) => {
-            return task.finished === false
+        tasks.forEach((task) => {
+            if(task.finished) {
+                dataProvider.deleteTask(task.id)
+            }
         })
-        console.log('unFinishedTasks: ', unFinishedTasks)
-        onTaskChange(unFinishedTasks)
+        refreshTasks()
     }
     return(
         <div>
@@ -28,7 +32,7 @@ const ToDoList: React.FC<ToDoListProps> = ({ tasks, onTaskChange }) => {
                 {
                     tasks.map((task) => {
                         return(
-                            <Task key={task.id} taskName={task.taskName} id={task.id} tasks={tasks} onTaskChange={onTaskChange} isFinished={task.finished} />
+                            <Task key={task.id} task={task} dataProvider={dataProvider}  />
                         )
                     })
                 }

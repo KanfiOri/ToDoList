@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
 import ToDoInput from '../ToDoInput/ToDoInput';
 import ToDoList from '../ToDoList/ToDoList';
-import data from '../../../logic/data'
+import { iDataProvider } from '../../../dataProvider/dataprovider'
+import './ToDoApp.css'
 
-const ToDoApp: React.FC = () => {
-  const [tasks, setTasks] = useState(data)
+interface ToDoAppProps {
+  dataProvider: iDataProvider
+}
+
+const ToDoApp: React.FC<ToDoAppProps> = ({ dataProvider }) => {
   return (
-    <div>
-      <ToDoInput tasks= {tasks} onTaskChange={setTasks}/>
-      <ToDoList tasks={ tasks } onTaskChange={setTasks} />
+    <div className='container'>
+      <div className='app'>
+        <ToDoInput dataProvider= {dataProvider}/>
+        <ToDoList dataProvider= {dataProvider} />
+      </div>
     </div>
   );
 };
